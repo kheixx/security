@@ -1,0 +1,27 @@
+#Script to if there are active machines in net segment. (usando el comando "ping")
+#Python 3.5
+
+from subprocess import Popen, PIPE
+
+for ip in range (1,255):#el rango de IP en tipo C : 0-255
+	ipAddress = '195.168.1.' + str(ip)#the range of the third group of numbers can be: 0-255
+	subprocess = Popen (['/sbin/ping','-c 1',ipAddress],stdout=PIPE, stdin=PIPE, stderr=PIPE) #we create a Popen stay to execute the ping command
+																							#The entry and exit flows will be PIPE
+	stdout, stderr = subprocess.communicate(input=None)#Use the "communicate" command to capture the exit flow and the error flow
+	if b"bytes from" in stdout:
+		print ('IP:' + ipAddress) 																	
+
+
+
+
+
+
+#Clarifications: 
+#ICPM protocol: message protocol that allows to know if a determinate machine is available or not disponible o no (message exchange)
+#					The "ping" command use the ICPM "ECHO_REQUEST" message to know, if the machine is available.
+#					If it is active, it will send ICPM "ECHO_REPLY" message, showing its state  
+#					There are 20 types of ICMP message.
+#   Traceroute: this tool is used to make an analysis of the traffic of the packages from the different routers and we can see
+                where the packages go.
+#	Popen: this builder allows the arguments be prepared for the new programm, allowing the father proccess to comunicate with it 	
+#		     through the pipes. We will use PIPE for that.
